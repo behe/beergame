@@ -15,6 +15,10 @@ class Game
     players.reverse.each_cons(2) do |player1, player2|
       player1.deliver_shipment_to(player2)
     end
+    # 1. Receive shipment from supplier
+    # 2. Receive order from customer
+    # 3. Fulfil order to customer
+    # 4. Send order to supplier
   end
 end
 
