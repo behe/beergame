@@ -7,10 +7,11 @@ describe Player do
     its(:shipped) { should == 0 }
     its(:backlog) { should == 0 }
     its(:balance) { should == 0 }
+    its(:order) { should == 0 }
   end
 
   context "initial round" do
-    context "initial delivery" do
+    context "initial shipment" do
       before do
         subject.deliver_shipment 4
       end

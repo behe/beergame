@@ -1,12 +1,20 @@
 class Customer
-  attr_reader :order
+  attr_reader :order_queue, :shipped
 
   def initialize
-    @orders = [4, 4, 4, 4]
-    deliver_shipment
+    @order_queue = [4, 4, 4, 4]
+    @shipped = []
+  end
+
+  def receive_order
+    @order_queue.shift || 8
+  end
+
+  def order
+    @order_queue.first || 8
   end
 
   def deliver_shipment(shipment=nil)
-    @order = @orders.shift || 8
+    @shipped << shipment
   end
 end

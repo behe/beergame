@@ -1,5 +1,5 @@
 class Player
-  attr_accessor :name, :inventory, :shipped, :backlog, :balance
+  attr_accessor :name, :inventory, :shipped, :backlog, :balance, :upstream, :downstream
   attr_reader :order
 
   INVENTORY_COST = 0.5
@@ -11,12 +11,12 @@ class Player
     self.shipped   = 0
     self.backlog   = 0
     self.balance   = 0
-    @order     = 4
+    @order         = 0
   end
 
-  def deliver(shipment, order)
-    deliver_shipment(shipment)
-    place_order(order)
+  def next_week
+    deliver_shipment(@downstream.receive_shipment)
+    place_order(@upstream.receive_order)
   end
 
   def deliver_shipment(shipment)
@@ -24,7 +24,7 @@ class Player
   end
 
   def place_order(order)
-    self.backlog   += order
+    self.backlog += order
     if backlog > inventory
       self.shipped = inventory
     else
@@ -32,11 +32,8 @@ class Player
     end
     self.inventory -= shipped
     self.backlog   -= shipped
+    @upstream.deliver_shipment(shipped) if @upstream
     self.balance   -= (inventory * INVENTORY_COST) + (backlog * BACKLOG_COST)
-  end
-
-  def deliver_shipment_to(upstream)
-    upstream.deliver_shipment(order)
   end
 
   def to_s
@@ -45,7 +42,8 @@ class Player
       inventory: inventory,
       shipped:   shipped,
       backlog:   backlog,
-      balance:   balance
+      balance:   balance,
+      order:     order
     }
   end
 end

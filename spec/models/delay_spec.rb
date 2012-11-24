@@ -6,7 +6,8 @@ describe Delay do
   end
 
   it "should order whatever is shipped" do
+    subject.receive_shipment
     subject.deliver_shipment 8
-     subject.order.should == 8
+    subject.receive_shipment.should == 8
   end
 end
